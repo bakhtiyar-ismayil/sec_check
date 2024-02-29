@@ -66,3 +66,26 @@ Also, ensure that the ARF file specified (arf.xml) exists and contains the scan 
 ```
 oscap xccdf generate fix --fix-type ansible --output playbook-rhel8.yml --result-id "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_cis" --fetch-remote-resources  arf.xml
 ```
+
+
+# Oracle_Linux8
+
+```
+yum install openscap-scanner  scap-security-guide bzip2 -y
+```
+
+```
+oscap info /usr/share/xml/scap/ssg/content/ssg-ol8-ds.xml  --profile xccdf_org.ssgproject.content_profile_cis
+```
+
+```
+oscap xccdf eval  --profile xccdf_org.ssgproject.content_profile_anssi_bp28_enhanced --results-arf arf.xml  --report report.html /usr/share/xml/scap/ssg/content/ssg-ol8-ds.xml
+```
+
+```
+oscap xccdf generate fix --fix-type ansible --output playbook-ol8.yml --result-id "xccdf_org.ssgproject.content_profile_anssi_bp28_enhanced" --fetch-remote-resources  arf.xml
+```
+
+```
+ansible-playbook -i /etc/ansible/hosts  playbook-ol8.yml  --ask-become --ask-pass  --extra-vars "ansible_user=root ansible_ssh_port=22" 
+```
